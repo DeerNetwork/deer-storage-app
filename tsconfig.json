@@ -18,7 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@polkadot/types/lookup": ["../node_modules/@deernetwork/type-definitions/interfaces/types-lookup.d.ts"],
+    }
   },
   "include": [
     "src"
