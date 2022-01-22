@@ -2,11 +2,11 @@ import { useSnapshot } from "valtio";
 import * as ipfsStore from "../store/ipfs";
 import { Box, Alert, CircularProgress, Button } from "@mui/material";
 
-interface Props {
+export interface LoginIpfsGatewayProps {
   onFinish: () => void;
 }
 
-export default ({ onFinish }: Props) => {
+const LoginIpfsGateway = ({ onFinish }: LoginIpfsGatewayProps) => {
   const handleClick = async () => {
     const ok = await ipfsStore.login();
     if (ok) {
@@ -42,3 +42,5 @@ export default ({ onFinish }: Props) => {
     </Box>
   );
 };
+
+export default LoginIpfsGateway;

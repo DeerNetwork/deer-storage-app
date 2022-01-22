@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Typography, Stepper, Step, StepLabel } from "@mui/material";
 import { useSnapshot } from "valtio";
 
@@ -44,7 +44,9 @@ function App() {
           }}
         />
       )}
-      {step === 3 && !!file && <SaveToChain file={file} />}
+      {step === 3 && !!file && (
+        <SaveToChain file={file} onBack={() => setStep(step - 1)} />
+      )}
     </Box>
   );
 }

@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 
 import * as polkadotStore from "../store/polkadot";
-import { AccountIdentity } from "./AccountIdentity";
+import AccountIdentity from "./AccountIdentity";
 
-interface Props {
+export interface ConnectWalletProps {
   onFinish: () => void;
 }
 
-export default ({ onFinish }: Props) => {
+const ConnectWallet = ({ onFinish }: ConnectWalletProps) => {
   useEffect(() => {
     polkadotStore.init();
   }, []);
@@ -58,3 +58,5 @@ export default ({ onFinish }: Props) => {
     </Box>
   );
 };
+
+export default ConnectWallet;

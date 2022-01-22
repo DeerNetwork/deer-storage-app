@@ -10,11 +10,11 @@ const Input = styled("input")({
   display: "none",
 });
 
-interface Props {
+export interface FileUploadProps {
   onFinish: (file: IpfsFile) => void;
 }
 
-export default ({ onFinish }: Props) => {
+const FileUpload = ({ onFinish }: FileUploadProps) => {
   const { ipfsServer, auth } = useSnapshot(ipfsStore.state);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
@@ -38,7 +38,7 @@ export default ({ onFinish }: Props) => {
         setProgress(percent);
       },
     });
-    onFinish({ Hash, Size, Name });
+    onFinish({ Hash, Size: parseInt(Size), Name });
   };
   return (
     <Box
@@ -77,3 +77,5 @@ export default ({ onFinish }: Props) => {
     </Box>
   );
 };
+
+export default FileUpload;

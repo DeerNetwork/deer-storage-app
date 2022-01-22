@@ -1,17 +1,23 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useSnapshot } from "valtio";
+import { BN } from "@polkadot/util";
 import * as polkadotStore from "../store/polkadot";
+import useFormat from "../hooks/useFormat";
 import { IpfsFile } from "../types";
+import useWaitSignAndSend from "../hooks/useWaitSignAndSend";
 
-interface Props {
+export interface SaveToChainProps {
   file: IpfsFile;
+  onBack: () => void;
 }
 
-export default ({ file }: Props) => {
-  const [fee, setFee] = useState(0);
+const SaveToChain = ({ file, onBack }: SaveToChainProps) => {
+  const [fee, setFee] = useState(new BN(0));
   const [days, setDays] = useState(180);
+  const waitSignAndSend = useWaitSignAndSend();
   const { api } = useSnapshot(polkadotStore.state);
+  const format = useFormat();
   useEffect(() => {
     const run = async () => {
       if (!api) return;
@@ -19,10 +25,22 @@ export default ({ file }: Props) => {
         file.Size,
         14400 * days
       );
-      setFee(storeFee.fee.toNumber());
+      setFee(storeFee.fee.toBn());
     };
     run();
   }, [days, api, file]);
+  const action = useMemo(() => {
+    if (api) {
+      return api.tx.fileStorage.store(file.Hash, file.Size, fee);
+    } else {
+      return;
+    }
+  }, [api, file, fee]);
+  const onConfirm = useCallback(async () => {
+    if (action) {
+      return waitSignAndSend({ extrinsic: action });
+    }
+  }, [action, waitSignAndSend]);
   return (
     <Box
       sx={{
@@ -70,15 +88,21 @@ export default ({ file }: Props) => {
         <TextField
           id="fee"
           label="Fee"
-          value={fee}
+          value={format(fee)}
           variant="standard"
           disabled
         />
-      </Box>
-
-      <Box sx={{ mt: 3 }}>
-        <Button variant="contained">Save</Button>
+        <Box sx={{ mt: 3 }}>
+          <Button variant="contained" onClick={onConfirm}>
+            Save
+          </Button>
+          <Button sx={{ ml: 1 }} variant="outlined" onClick={onBack}>
+            Back
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
 };
+
+export default SaveToChain;

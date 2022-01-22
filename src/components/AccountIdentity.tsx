@@ -2,17 +2,17 @@ import Identicon from "@polkadot/react-identicon";
 import { Box } from "@mui/material";
 import { Account } from "../types";
 
-interface Props {
+export interface AccountIdentityProps {
   account: Account;
   size?: "small" | "normal";
   onSelect?: (account: Account) => void;
 }
 
-export const AccountIdentity = ({
+const AccountIdentity = ({
   account,
   size = "normal",
   onSelect,
-}: Props) => {
+}: AccountIdentityProps) => {
   return (
     <Box
       sx={{ display: "flex", alignItems: "center" }}
@@ -30,6 +30,8 @@ export const AccountIdentity = ({
     </Box>
   );
 };
+
+export default AccountIdentity;
 
 function toShortAddress(address: string): string {
   return address.length > 13
