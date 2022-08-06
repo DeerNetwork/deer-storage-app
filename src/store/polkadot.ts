@@ -45,8 +45,8 @@ export const state = proxy<PolkadotState>({
   chain: "Deer network",
   endpoint:
     localStorage.getItem("endpoint") ||
-    process.env.ENDPOINT ||
-    "wss://pretest-ws.deernetwork.vip",
+    process.env.RECAT_APP_ENDPOINT ||
+    "wss://testnet-ws.deernetwork.vip",
   accounts: [],
 });
 

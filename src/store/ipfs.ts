@@ -13,7 +13,7 @@ export interface IpfsState {
 export const state = proxy<IpfsState>({
   ipfsServer:
     localStorage.getItem("ipfsServer") ||
-    process.env.IPFS_SERVER ||
+    process.env.REACT_APP_IPFS_SERVER ||
     "https://testnet-ipfs.deernetwork.vip",
   auth: localStorage.getItem("ipfsAuth") || undefined,
 });
